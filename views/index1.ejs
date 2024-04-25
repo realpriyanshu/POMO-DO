@@ -1,0 +1,164 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link
+    href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css"
+    rel="stylesheet"
+/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+<style>
+    .input-width{
+        width: 70%;
+    }
+    #inputpomo{
+        display: flex;
+    }
+    #box{
+        width: 28%;
+        height:   220px;
+        background-color:bg-zinc-900;
+        border-radius: 40px;
+        border: solid rgba(255, 255, 255, 0.24);
+        margin-top: 10px;
+        display: block;
+        
+      
+    }
+
+    #box h1{
+        font-size: 60px;
+        color: rgba(255, 255, 255, 0.694);
+        padding-left: 150px;
+        padding-right: 200px;
+        padding-top: 30px;
+    }
+    #btn{
+        display: flex;
+        justify-content: space-around;
+        margin-top: 30px;
+    }
+    #btn button{
+        color: white;
+        font-size: 30px;
+    }
+
+    
+
+</style>
+</head>
+<body>
+    <div id="main"  class="w-full min-h-screen bg-zinc-900">
+
+<div id="inputpomo" >
+    <div id="form" class=" input-width  p-10 text-white">
+        <form action="/create" method="post"> 
+            <%#form in which theree are 2 columns , for title and for  description %>
+
+            <input class="block w-full   rounded-md outline-none px-4 py-2 bg-zinc-800 mb-2"type="text" placeholder="title goes here" name="title">
+            <textarea  class="block w-full rounded-md outline-none px-5 py-2 bg-zinc-800 resize-none mb-2" placeholder="your content" name="content"></textarea>
+            <input class=" bg-blue-500 px-2 py-2 rounded-md" type="submit" value="Create Task">
+
+        </form>
+    </div>
+    <div id="box">
+        <h1 id ="time">25:00</h1>
+      <div id="btn">
+        <button id="start"><i class="ri-play-circle-fill"></i></button>
+        <button id="reset"><i class="ri-restart-line"></i></button>
+        <button id="stop"><i class="ri-stop-circle-line"></i></button>
+        <button id="resume"><i class="ri-play-line"></i></button>
+        
+          
+
+      </div>
+
+    </div>
+</div>
+
+
+       <div class="flex gap-3 flex-wrap p-10">
+        <%# by this you can create  a loop to iterate over the tasks which are saved in files %>
+
+
+
+        <%if(files.length>0){%>
+        <%files.forEach((file)=>{%>
+            <div class="task  min-w-72 px-3 py-4 text-white rounded-md bg-zinc-800">
+            <h1 class="text-white px-10 text-3xl"><%=file%></h1>
+
+              <a class="text-blue-500 inline-block mt-3 px-10 " href="/inside/<%=file%> ">read more..</a>
+              <form action="/delete" class="min-w-72" method="post">
+                <input type="hidden" name="filename" value="<%=file%>">
+                <input class=" bg-blue-500  mt-3 ml-40 p-1 rounded-md" type="submit"  value="delete"></form>
+              
+           </div>
+       <%})%>
+    <%} else{ %>
+        <h1 class="text-white"> no task to show here</h1>
+        <%}%>
+       </div>
+    </div>
+
+    <script>
+        const start = document.querySelector("#start");
+        const stop = document.querySelector("#stop");
+        const reset = document.querySelector("#reset");
+        const timer = document.querySelector("#time");
+        const resume =document.querySelector("#resume");
+
+        var interval;
+        var min ;
+        var sec;
+        var timevalue = 1500;
+
+
+        start.addEventListener('click',startT);
+        stop.addEventListener('click',stopT);
+        reset.addEventListener('click',resetT);
+        resume.addEventListener('click',resumeT);
+
+        function resumeT(){
+            startT();
+        }
+ 
+        function clock(){
+            min= Math.floor(timevalue/60);
+                 sec = timevalue%60;
+                 timer.innerHTML= `${min.toString().padStart(2,0)}:${sec.toString().padStart(2,0)}`;
+
+        }
+        function startT(){
+            
+          interval =    setInterval(()=>{
+                timevalue--;
+                clock();
+               
+            },1000)
+
+
+        }
+        function stopT(){
+            clearInterval(interval);
+            
+        }      
+        function resetT(){
+            clearInterval(interval);
+            timevalue=1500;
+            clock();
+         
+        }
+       
+
+
+        
+    </script>
+</body>
+</html> 
+
+
+
+
