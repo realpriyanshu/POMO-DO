@@ -2,7 +2,13 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const  fs = require('fs');
-const { name } = require('ejs');
+
+
+
+
+
+
+
 
 
 app.use(express.json());
@@ -53,7 +59,63 @@ app.get('/inside/:filename',(req,resp)=>{
 })
 
 
-app.listen(3001);
+const http = require('http');
+const server = http.createServer(app);
+const io = require('socket.io')(server);  // attack your server to socket 
+
+io.on('connection',(socket)=>{
+    console.log("connection established");
+
+    socket.on('file-content',(data)=>{ /// if you edited any socket then you have to update or have to tell every socket that this socket is updated by using (io.emit) and if you want to show that (io.emit) on screen then ON that io.emit in html or ejs.
+        
+        fs.writeFile(`./public/${data.filename}`,data.content,(err)=>{
+            if(err){
+                console.log(err);
+            }else{
+                console.log("file updated");
+                
+    io.emit('file-updated', data);   
+            }
+        })
+      
+    })
+   
+
+
+
+})
+
+
+
+
+
+
+server.listen(3001 , ()=>{
+    console.log("running");
+});
+
+// const http = require('http').createServer(app);
+// const io = require('socket.io')(http);
+
+// io.on('connection', (socket) => {
+//     console.log('A user connected');
+
+//     socket.on('file-edit', (data) => {
+//         fs.writeFile(`./public/${data.filename}`, data.content, (err) => {
+//             if (err) {
+//                 // Handle error
+//             } else {
+//                 console.log('File updated');
+//                 io.emit('file-updated', data);
+//             }
+//         });
+//     });
+// });
+
+// http.listen(3001, () => {
+//     console.log('Server is running on port 3001');
+// });
+
 
 
  

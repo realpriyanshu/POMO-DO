@@ -49,6 +49,7 @@
     
 
 </style>
+
 </head>
 <body>
     <div id="main"  class="w-full min-h-screen bg-zinc-900">
@@ -105,7 +106,7 @@
 
     <script>
         const start = document.querySelector("#start");
-        const stop = document.querySelector("#stop");
+        const Stop = document.querySelector("#stop");
         const reset = document.querySelector("#reset");
         const timer = document.querySelector("#time");
         const resume =document.querySelector("#resume");
@@ -117,7 +118,7 @@
 
 
         start.addEventListener('click',startT);
-        stop.addEventListener('click',stopT);
+        Stop.addEventListener('click',stopT);
         reset.addEventListener('click',resetT);
         resume.addEventListener('click',resumeT);
 
@@ -133,7 +134,7 @@
         }
         function startT(){
             
-          interval =    setInterval(()=>{
+          interval =  setInterval(()=>{
                 timevalue--;
                 clock();
                
