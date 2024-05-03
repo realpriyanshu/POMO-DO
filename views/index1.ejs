@@ -45,6 +45,9 @@
         color: white;
         font-size: 30px;
     }
+    #editTitle{
+        color: rgba(128, 128, 128, 0.628);
+    }
 
     
 
@@ -62,8 +65,10 @@
             <input class="block w-full   rounded-md outline-none px-4 py-2 bg-zinc-800 mb-2"type="text" placeholder="title goes here" name="title">
             <textarea  class="block w-full rounded-md outline-none px-5 py-2 bg-zinc-800 resize-none mb-2" placeholder="your content" name="content"></textarea>
             <input class=" bg-blue-500 px-2 py-2 rounded-md" type="submit" value="Create Task">
+           
 
         </form>
+
     </div>
     <div id="box">
         <h1 id ="time">25:00</h1>
@@ -72,9 +77,6 @@
         <button id="reset"><i class="ri-restart-line"></i></button>
         <button id="stop"><i class="ri-stop-circle-line"></i></button>
         <button id="resume"><i class="ri-play-line"></i></button>
-        
-          
-
       </div>
 
     </div>
@@ -95,6 +97,7 @@
               <form action="/delete" class="min-w-72" method="post">
                 <input type="hidden" name="filename" value="<%=file%>">
                 <input class=" bg-blue-500  mt-3 ml-40 p-1 rounded-md" type="submit"  value="delete"></form>
+                <a id = "editTitle" href="/edit/<%=file%>">edit title</a>
               
            </div>
        <%})%>

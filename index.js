@@ -5,12 +5,6 @@ const  fs = require('fs');
 
 
 
-
-
-
-
-
-
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.set('view engine','ejs');
@@ -32,11 +26,15 @@ app.get('/',(res, resp)=>{
 })
 // this post is for creating new files or tasks in the folder using fs , after creating the file it will be redirected to home page  
 //split(' ') make a array of name of file and then join('') it , so there will be no spaces
+
 app.post('/create',(req,resp)=>{
    fs.writeFile(`./public/${req.body.title.split(' ').join('')}.txt`,req.body.content ,function(err){
     resp.redirect("/");
    });
 })
+
+
+
 app.post('/delete',(req,resp)=>{
     fs.unlink(`./public/${req.body.filename}`,(err)=>{
         if(err){
@@ -58,10 +56,29 @@ app.get('/inside/:filename',(req,resp)=>{
     })
 })
 
+app.get('/edit/:filename.txt',(req,resp)=>{
+    resp.render("editTitle", {filename: req.params.filename});
+})
+
+app.post('/edited',(req,resp)=>{
+    fs.rename(`./public/${req.body.update}.txt`,`./public/${req.body.newTitle}.txt`,(err)=>{
+        if(err){
+            
+           
+            console.log(err);
+
+        }else{
+            resp.redirect('/');
+
+            console.log("title updated");
+        }
+    })
+})
+
 
 const http = require('http');
 const server = http.createServer(app);
-const io = require('socket.io')(server);  // attack your server to socket 
+const io = require('socket.io')(server);  // attach your server to socket 
 
 io.on('connection',(socket)=>{
     console.log("connection established");
@@ -93,31 +110,3 @@ io.on('connection',(socket)=>{
 server.listen(3001 , ()=>{
     console.log("running");
 });
-
-// const http = require('http').createServer(app);
-// const io = require('socket.io')(http);
-
-// io.on('connection', (socket) => {
-//     console.log('A user connected');
-
-//     socket.on('file-edit', (data) => {
-//         fs.writeFile(`./public/${data.filename}`, data.content, (err) => {
-//             if (err) {
-//                 // Handle error
-//             } else {
-//                 console.log('File updated');
-//                 io.emit('file-updated', data);
-//             }
-//         });
-//     });
-// });
-
-// http.listen(3001, () => {
-//     console.log('Server is running on port 3001');
-// });
-
-
-
- 
-
-
