@@ -108,5 +108,6 @@ io.on('connection',(socket)=>{
 
 
 server.listen(3001 , ()=>{
-    console.log("running");
+    console.log("running on port 3001");
+
 });
