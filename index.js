@@ -3,6 +3,8 @@ const app = express();
 const path = require('path');
 const  fs = require('fs');
 
+const userModel = require('./models/user');
+
 
 
 app.use(express.json());
@@ -13,6 +15,8 @@ app.set('view engine','ejs');
 
 app.get('/',(res, resp)=>{
 
+
+
     fs.readdir("./public",(err ,files)=>{  /// only after reading the files the page will be shown thats why we keep app.render into the readdir.
         
         if (err) {
@@ -22,14 +26,18 @@ app.get('/',(res, resp)=>{
         resp.render("index1",{files:files});  //this will create a string array of all the files  in the current folder and send it to index1 page.
     })
    
+  
     
 })
 // this post is for creating new files or tasks in the folder using fs , after creating the file it will be redirected to home page  
 //split(' ') make a array of name of file and then join('') it , so there will be no spaces
 
-app.post('/create',(req,resp)=>{
+app.post('/create',async(req,resp)=>{
+
+
    fs.writeFile(`./public/${req.body.title.split(' ').join('')}.txt`,req.body.content ,function(err){
     resp.redirect("/");
+    
    });
 })
 
